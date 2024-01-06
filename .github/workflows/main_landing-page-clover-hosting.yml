@@ -57,6 +57,5 @@ jobs:
         with:
           app-name: 'landing-page-clover-hosting'
           slot-name: 'Production'
-          startup-command: 'node /home/site/wwwroot/build/'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0451AC06A3CD4C6286EF65A43D557F9F }}
           package: .
