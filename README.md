@@ -1,3 +1,5 @@
+# Azure
+Om te deployen naar een app service web app, ga naar portal > web app > configuration > general settings en set "startup command" naar 
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).

@@ -1,6 +1,6 @@
-<div class="navbar bg-base-100">
+<div class="absolute inset-x-0 top-0 navbar bg-base-100 p-0 rounded-[2rem] mt-2">
 	<div class="flex-1">
-		<a class="btn btn-ghost text-xl">daisyUI</a>
+		<a class="btn btn-ghost text-xl pl-3 ml-3">Clover</a>
 	</div>
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
