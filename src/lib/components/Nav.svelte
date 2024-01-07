@@ -1,10 +1,25 @@
-<div class="absolute inset-x-0 top-0 navbar bg-base-100 p-0 rounded-[2rem] mt-2">
+<script>
+	import { CommandLine, Folder, Icon } from 'svelte-hero-icons';
+</script>
+
+<div class="inset-x-0 top-0 navbar bg-base-100 p-0">
 	<div class="flex-1">
-		<a class="btn btn-ghost text-xl pl-3 ml-3">Clover</a>
+		<a href="/" class="btn btn-ghost text-xl pl-3 ml-3">Clover</a>
 	</div>
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
-			<li><a>Link</a></li>
+			<li>
+				<a href="/files">
+					<Icon src={Folder} size="20" />
+					Files
+				</a>
+			</li>
+			<li>
+				<a href="/server">
+					<Icon src={CommandLine} size="20" />
+					Console
+				</a>
+			</li>
 			<li>
 				<details>
 					<summary> Parent </summary>

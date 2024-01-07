@@ -6,4 +6,3 @@
 
 <Hero />
 <HeroCards />
-<Footer />

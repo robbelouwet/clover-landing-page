@@ -1,14 +1,12 @@
 <script>
 	import Carousel from '$lib/components/Carousel.svelte';
 	import Menu from '$lib/components/Menu.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 </script>
 
 <div
-	class="relative hero min-h-[90vh] bg-gradient-to-b from-inherit text-white"
+	class="hero min-h-[90vh] bg-gradient-to-b from-inherit text-white saturate-200"
 	style="background-image: url(background.jpg);"
 >
-	<Nav />
 	<!-- <Menu /> -->
 	<div class="hero-overlay bg-opacity-60"></div>
 	<div class="hero-content text-center">
