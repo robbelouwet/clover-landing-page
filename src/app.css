@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hide-scrollbars {
+    /* Hide scrollbar for Firefox and other browsers */
+    overflow: auto;
+
+    /* Hide scrollbar for WebKit-based browsers */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+/* Styling for WebKit-based browsers (Chrome, Safari) */
+.hide-scrollbars::-webkit-scrollbar {
+    width: 6px;
+    /* Adjust the width as needed */
+}
+
+.hide-scrollbars::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.menu :where(li ul) {
+    margin-inline-start: 0 !important;
+}

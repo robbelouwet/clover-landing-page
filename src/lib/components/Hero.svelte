@@ -1,6 +1,5 @@
 <script>
 	import Carousel from '$lib/components/Carousel.svelte';
-	import Menu from '$lib/components/Menu.svelte';
 </script>
 
 <div

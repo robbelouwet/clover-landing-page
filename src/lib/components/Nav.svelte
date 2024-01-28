@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { CommandLine, Folder, Icon } from 'svelte-hero-icons';
 </script>
 
@@ -15,19 +15,10 @@
 				</a>
 			</li>
 			<li>
-				<a href="/server">
+				<a href="/console">
 					<Icon src={CommandLine} size="20" />
 					Console
 				</a>
-			</li>
-			<li>
-				<details>
-					<summary> Parent </summary>
-					<ul class="p-2 bg-base-100 rounded-t-none">
-						<li><a>Link 1</a></li>
-						<li><a>Link 2</a></li>
-					</ul>
-				</details>
 			</li>
 		</ul>
 	</div>
