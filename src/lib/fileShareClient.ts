@@ -1,7 +1,7 @@
 import { get } from "svelte/store"
 import { user } from "./stores"
 import { type UserFolder } from "./types"
-import { PUBLIC_BACKEND_HOST } from '$env/static/public';
+import { PUBLIC_BACKEND_HOST } from '$env/dynamic/public';
 
 export const loadFolderContent = async (folderPath: string = "") => {
     if (get(user) === null) {
