@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 	import { onMount } from 'svelte';
 	import { CommandLine, Folder, Icon, Play, UserCircle } from 'svelte-hero-icons';
 
@@ -33,7 +33,7 @@
 				</a>
 			</li>
 			<li>
-				<a href={`${PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=${host}`}>
+				<a href={`${env.PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=${host}`}>
 					<Icon src={UserCircle} size="20" />
 					Login
 				</a>
