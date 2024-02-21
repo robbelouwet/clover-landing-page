@@ -23,7 +23,9 @@
 		<div
 			class="grid lg:flex-grow card bg-base-300 rounded-box overflow-auto h-[70vh] mt-3 hide-scrollbars"
 		>
+			<!-- {#if folder !== null && folder !== undefined} -->
 			<FileMenu folder={data} level={0} />
+			<!-- {/if} -->
 		</div>
 	</div>
 	<div class="divider lg:divider-horizontal" />

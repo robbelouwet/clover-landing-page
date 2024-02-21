@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { user } from '$lib/stores';
+	import { server } from '$lib/stores';
 	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 
@@ -8,8 +8,10 @@
 	let socket: WebSocket;
 
 	const connectWebSocket = () => {
-		if (get(user) === null) throw new Error('Opening ws channel when user is not logged in!');
-		socket = new WebSocket(`ws://${get(user)!.serverHost}:${get(user)!.port + 1}`);
+		if (get(server) === null) throw new Error('Opening ws channel when user is not logged in!');
+		const url = `ws://${get(server)!.serverHost}:${get(server)!.port + 1}`;
+		console.log('server: ', get(server), ', Connecting ws to ', url, '!');
+		socket = new WebSocket(url);
 
 		socket.addEventListener('open', () => {
 			console.log('Connected to WebSocket server');

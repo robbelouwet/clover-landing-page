@@ -1,10 +1,11 @@
 import { get } from "svelte/store"
-import { user } from "./stores"
+import { server } from "./stores"
 import { type UserFolder } from "./types"
-import { PUBLIC_BACKEND_HOST } from '$env/dynamic/public';
+import { env } from '$env/dynamic/public';
 
 export const loadFolderContent = async (folderPath: string = "") => {
-    if (get(user) === null) {
+    if (get(server) === null) {
+        console.log("Server null: ", get(server))
         throw new Error("Loading folder content when user is not logged in!")
     }
 
@@ -15,7 +16,7 @@ export const loadFolderContent = async (folderPath: string = "") => {
         subfolders: []
     }
 
-    const response: any = await fetch(`http://${PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&share=${get(user)!.share}`, {
+    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&share=${get(server)!["share"]}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -102,11 +103,11 @@ export const expandFolderRecursively: (
 };
 
 export const loadFileContent = async (filepath: string) => {
-    if (get(user) === null) {
+    if (get(server) === null) {
         throw new Error("Loading file content when user is not logged in!")
     }
 
-    const response = await fetch(`http://${PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&share=${get(user)!.share}`, {
+    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&share=${get(server)!.share}`, {
         method: 'GET',
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -117,12 +118,11 @@ export const loadFileContent = async (filepath: string) => {
 }
 
 export const upsertFileContent = async (content: string, filepath: string) => {
-    if (get(user) === null) {
-        alert("You need to be logged in first!")
+    if (get(server) === null) {
         throw new Error("Uploading file when user is not logged in!")
     }
 
-    await fetch(`http://${PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&share=${get(user)!.share}`, {
+    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&share=${get(server)!.share}`, {
         method: 'POST',
         headers: {
             'Access-Control-Allow-Origin': '*',

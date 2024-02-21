@@ -1,4 +1,4 @@
-export type User = {
+export type Server = {
     /** @property {string} username The username of the user. */
     username: string
 

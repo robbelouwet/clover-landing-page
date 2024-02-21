@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { CommandLine, Folder, Icon } from 'svelte-hero-icons';
+	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
+	import { CommandLine, Folder, Icon, Play, UserCircle } from 'svelte-hero-icons';
 </script>
 
 <div class="inset-x-0 top-0 navbar bg-base-100 p-0">
@@ -8,6 +9,12 @@
 	</div>
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
+			<li>
+				<a href="/connect">
+					<Icon src={Play} size="20" />
+					Connect
+				</a>
+			</li>
 			<li>
 				<a href="/files">
 					<Icon src={Folder} size="20" />
@@ -18,6 +25,12 @@
 				<a href="/console">
 					<Icon src={CommandLine} size="20" />
 					Console
+				</a>
+			</li>
+			<li>
+				<a href={`${PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=/`}>
+					<Icon src={UserCircle} size="20" />
+					Login
 				</a>
 			</li>
 		</ul>
