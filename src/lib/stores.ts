@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 import type { Server } from './types';
-import { env } from '$env/dynamic/public';
+import { PUBLIC_BACKEND_HOST } from '$env/static/public'
 
 const resolve: () => Promise<Server> = async () => {
-    const result = await (await fetch(`${env.PUBLIC_BACKEND_HOST}/get-server`)).json()
+    const result = await (await fetch(`${PUBLIC_BACKEND_HOST}/get-server`)).json()
 
     const server: Server = {
         serverHost: result["server_host"],
