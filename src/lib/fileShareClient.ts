@@ -18,6 +18,7 @@ export const loadFolderContent = async (folderPath: string = "") => {
 
     const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&share=${get(server)!["share"]}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
@@ -109,6 +110,7 @@ export const loadFileContent = async (filepath: string) => {
 
     const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&share=${get(server)!.share}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'text/plain'
@@ -124,6 +126,7 @@ export const upsertFileContent = async (content: string, filepath: string) => {
 
     await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&share=${get(server)!.share}`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'text/plain'
