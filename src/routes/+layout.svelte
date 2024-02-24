@@ -14,8 +14,6 @@
 			method: 'GET',
 			credentials: 'include',
 			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Credentials': 'true',
 				Accept: 'application/json'
 			}
 		})

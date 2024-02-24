@@ -20,7 +20,6 @@ export const loadFolderContent = async (folderPath: string = "") => {
         method: 'GET',
         credentials: 'include',
         headers: {
-            'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
         }
     })
@@ -112,7 +111,6 @@ export const loadFileContent = async (filepath: string) => {
         method: 'GET',
         credentials: 'include',
         headers: {
-            'Access-Control-Allow-Origin': '*',
             'Accept': 'text/plain'
         }
     })
@@ -128,7 +126,6 @@ export const upsertFileContent = async (content: string, filepath: string) => {
         method: 'POST',
         credentials: 'include',
         headers: {
-            'Access-Control-Allow-Origin': '*',
             'Content-Type': 'text/plain'
         },
         body: content
