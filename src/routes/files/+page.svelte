@@ -1,9 +1,10 @@
 <script lang="ts">
 	import FileMenu from '$lib/components/file-menu/FileMenu.svelte';
 	import { upsertFileContent, loadFileContent, loadFolderContent } from '$lib/fileShareClient';
-	import { openFilePath } from '$lib/stores';
+	import { openFilePath, server } from '$lib/stores';
 	import type { UserFolder } from '$lib/types';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	// export let data;
 
 	let contents: string = '';
@@ -16,11 +17,16 @@
 		if (newPath !== null) loadFileContent(newPath!).then((d) => (contents = d));
 	});
 
-	onMount(() => {
-		loadFolderContent()
-			.then((f) => (folder = f))
-			.catch(console.error);
-	});
+	const tryLoad = () => {
+		if (get(server) !== null)
+			loadFolderContent()
+				.then((f) => (folder = f))
+				.catch(console.error);
+	};
+
+	server.subscribe((_) => tryLoad());
+
+	onMount(tryLoad);
 </script>
 
 <div class="flex flex-col w-full lg:flex-row min-h-[80vh] p-5">
