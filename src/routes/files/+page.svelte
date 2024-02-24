@@ -1,16 +1,25 @@
 <script lang="ts">
 	import FileMenu from '$lib/components/file-menu/FileMenu.svelte';
-	import { upsertFileContent, loadFileContent } from '$lib/fileShareClient';
+	import { upsertFileContent, loadFileContent, loadFolderContent } from '$lib/fileShareClient';
 	import { openFilePath } from '$lib/stores';
-	export let data;
+	import type { UserFolder } from '$lib/types';
+	import { onMount } from 'svelte';
+	// export let data;
 
 	let contents: string = '';
+	let folder: UserFolder | null = null;
 
 	const update = (e: Event) => (contents = (e.target as HTMLTextAreaElement).value);
 
 	openFilePath.subscribe((newPath) => {
 		console.log('new path: ', newPath);
 		if (newPath !== null) loadFileContent(newPath!).then((d) => (contents = d));
+	});
+
+	onMount(() => {
+		loadFolderContent()
+			.then((f) => (folder = f))
+			.catch(console.error);
 	});
 </script>
 
@@ -23,9 +32,24 @@
 		<div
 			class="grid lg:flex-grow card bg-base-300 rounded-box overflow-auto h-[70vh] mt-3 hide-scrollbars"
 		>
-			<!-- {#if folder !== null && folder !== undefined} -->
-			<FileMenu folder={data} level={0} />
-			<!-- {/if} -->
+			{#if folder !== null}
+				<FileMenu {folder} level={0} />
+			{:else}
+				<div class="m-3">
+					<div class="skeleton mb-4 h-4 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-5 h-3 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-5 h-3 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 h-4 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-5 h-3 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-5 h-3 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+					<div class="skeleton mb-4 ml-10 h-2 w-[90%] bg-white opacity-10"></div>
+				</div>
+			{/if}
 		</div>
 	</div>
 	<div class="divider lg:divider-horizontal" />

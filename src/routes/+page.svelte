@@ -5,13 +5,26 @@
 	import { server } from '$lib/stores';
 	import { type Server } from '$lib/types';
 	import { get } from 'svelte/store';
+	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
 
 	// export let data: Server;
 
-	// beforeUpdate(() => {
-	// 	server.set(data);
-	// 	console.log('Loaded server: ', data);
-	// });
+	beforeUpdate(() => {
+		fetch(`${PUBLIC_BACKEND_HOST}/get-user-server?servername=robbe`)
+			.then((data) => data.json())
+			.then((result) => {
+				const localServer: Server = {
+					serverHost: result['server_host'],
+					port: result['server_port'],
+					share: result['share'],
+					username: result['user_name']
+				};
+
+				server.set(localServer);
+				console.log('Loaded server: ', localServer);
+			})
+			.catch(console.error);
+	});
 </script>
 
 <Hero />

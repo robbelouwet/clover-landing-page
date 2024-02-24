@@ -7,6 +7,10 @@
 	let input = '';
 	let socket: WebSocket;
 
+	server.subscribe(() => {
+		if (get(server) !== null) connectWebSocket();
+	});
+
 	const connectWebSocket = () => {
 		if (get(server) === null) throw new Error('Opening ws channel when user is not logged in!');
 		const url = `ws://${get(server)!.serverHost}:${get(server)!.port + 1}`;
@@ -62,12 +66,16 @@
 <div id="terminal" class="p-5">
 	<div class="relative mockup-code w-[100%] h-[60vh]">
 		<div id="console-output" class="pb-[5rem] overflow-scroll h-full">
-			{#each consoleOutput as line}
-				<pre data-prefix="$"><code>{line}</code></pre>
-			{/each}
+			{#if consoleOutput.length !== 0}
+				{#each consoleOutput as line}
+					<pre data-prefix="$"><code>{line}</code></pre>
+				{/each}
+			{:else}
+				<div class="skeleton mb-4 ml-5 h-3 w-[90%] bg-white opacity-10"></div>
+			{/if}
 		</div>
 
-		&gt;<input
+		<input
 			type="text"
 			placeholder=">"
 			bind:value={input}
