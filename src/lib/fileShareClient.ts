@@ -16,7 +16,7 @@ export const loadFolderContent = async (folderPath: string = "") => {
         subfolders: []
     }
 
-    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&share=${get(server)!["share"]}`, {
+    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&servername=${get(server)!.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
