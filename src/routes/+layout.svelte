@@ -37,7 +37,7 @@
 		})
 			.then((data) => data.json())
 			.then((results) => {
-				results.forEach((result: any) => {
+				results?.forEach((result: any) => {
 					const localServer: Server = {
 						serverHost: result['server_host'],
 						port: result['server_port'],

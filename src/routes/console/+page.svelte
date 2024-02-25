@@ -7,10 +7,6 @@
 	let input = '';
 	let socket: WebSocket;
 
-	server.subscribe(() => {
-		if (get(server) !== null) connectWebSocket();
-	});
-
 	const connectWebSocket = () => {
 		if (get(server) === null) throw new Error('Opening ws channel when user is not logged in!');
 		const url = `ws://${get(server)!.serverHost}:${get(server)!.port + 1}`;
@@ -38,6 +34,10 @@
 			// retryWebSocket();
 		});
 	};
+
+	server.subscribe((s) => {
+		if (s !== null) connectWebSocket();
+	});
 
 	onMount(() => {
 		if (!socket || socket.readyState === WebSocket.CLOSED) {
