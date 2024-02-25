@@ -23,7 +23,8 @@
 					serverHost: result['server_host'],
 					port: result['server_port'],
 					share: result['share'],
-					username: result['user_name']
+					username: result['user_name'],
+					servername: result['server_name']
 				};
 
 				server.set(localServer);

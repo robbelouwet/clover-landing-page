@@ -51,6 +51,36 @@ export const loadFolderContent = async (folderPath: string = "") => {
 
 }
 
+export const loadFileContent = async (filepath: string) => {
+    if (get(server) === null) {
+        throw new Error("Loading file content when user is not logged in!")
+    }
+
+    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&servername=${get(server)!.servername}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'text/plain'
+        }
+    })
+    return await response.text()
+}
+
+export const upsertFileContent = async (content: string, filepath: string) => {
+    if (get(server) === null) {
+        throw new Error("Uploading file when user is not logged in!")
+    }
+
+    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(server)!.servername}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'text/plain'
+        },
+        body: content
+    })
+}
+
 export const expandFolderRecursively: (
     currentFolder: UserFolder,
     path: string,
@@ -101,33 +131,3 @@ export const expandFolderRecursively: (
     currentFolder.subfolders[j] = await expandFolderRecursively(nextSubDir, path, i + 1);
     return { ...currentFolder };
 };
-
-export const loadFileContent = async (filepath: string) => {
-    if (get(server) === null) {
-        throw new Error("Loading file content when user is not logged in!")
-    }
-
-    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&share=${get(server)!.share}`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Accept': 'text/plain'
-        }
-    })
-    return await response.text()
-}
-
-export const upsertFileContent = async (content: string, filepath: string) => {
-    if (get(server) === null) {
-        throw new Error("Uploading file when user is not logged in!")
-    }
-
-    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&share=${get(server)!.share}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'text/plain'
-        },
-        body: content
-    })
-}

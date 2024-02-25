@@ -10,6 +10,9 @@ export type Server = {
 
     /** @property {string} share The storage account file share name of this user's game files. */
     share: string
+
+    /** @property {string} servername The name of the server. */
+    servername: string
 }
 
 export type UserFolder = {
