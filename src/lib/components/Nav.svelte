@@ -15,7 +15,7 @@
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-1">
 			<li>
-				<a href="/connect">
+				<a href="/create">
 					<Icon src={Play} size="20" />
 					Connect
 				</a>
