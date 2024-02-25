@@ -1,6 +1,6 @@
 export type Server = {
     /** @property {string} username The username of the user. */
-    username: string
+    // username: string
 
     /** @property {string} serverHost The host of this user's server. */
     serverHost: string
