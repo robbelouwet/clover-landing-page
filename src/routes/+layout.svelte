@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Footer from '$lib/components/Footer.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 	import '../app.css';
 
 	import { onMount } from 'svelte';
-	import { server } from '$lib/stores';
+	import { selectedServer, servers } from '$lib/stores';
 	import { type Server } from '$lib/types';
-	import { get } from 'svelte/store';
 	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
 	import {
 		CommandLine,
@@ -15,17 +13,10 @@
 		Play,
 		UserCircle,
 		CheckCircle,
-		NoSymbol
+		NoSymbol,
+		ComputerDesktop
 	} from 'svelte-hero-icons';
 	import { env } from '$env/dynamic/public';
-
-	let servers: Server[] = [];
-	let selectedServer: Server | null = null;
-
-	server.subscribe((s) => {
-		console.log('Selected new server: ', s);
-		selectedServer = s;
-	});
 
 	onMount(() => {
 		fetch(`${PUBLIC_BACKEND_HOST}/get-all-user-servers`, {
@@ -37,20 +28,19 @@
 		})
 			.then((data) => data.json())
 			.then((results) => {
-				results?.forEach((result: any) => {
-					const localServer: Server = {
-						serverHost: result['server_host'],
-						port: result['server_port'],
-						share: result['share'],
-						servername: result['server_name']
-					};
-
-					servers = [...servers, localServer];
-				});
-
-				server.set(servers[0] ?? null);
-
-				console.log('Found user servers: ', servers);
+				servers.set(
+					results?.map((result: any) => {
+						const localServer: Server = {
+							serverHost: result['server_host'],
+							port: result['server_port'],
+							share: result['share'],
+							servername: result['server_name']
+						};
+						return localServer;
+					})
+				);
+				selectedServer.set($servers[0] ?? null);
+				console.log('Found user servers: ', $servers, ', selected: ', $selectedServer);
 			})
 			.catch(console.error);
 	});
@@ -65,7 +55,7 @@
 			<div class="flex-none">
 				<ul class="menu menu-horizontal">
 					<!-- Navbar menu content here -->
-					{#if selectedServer === null || selectedServer === undefined}
+					{#if $selectedServer === null || $selectedServer === undefined}
 						<li><a><Icon src={NoSymbol} size="20" style="color: red" />Disconnected</a></li>
 					{:else}
 						<li>
@@ -74,7 +64,7 @@
 									src={CheckCircle}
 									size="20"
 									style="color: green"
-								/>{selectedServer?.servername}</a
+								/>{$selectedServer?.servername}</a
 							>
 						</li>
 					{/if}
@@ -120,13 +110,21 @@
 						Connect
 					</summary>
 					<ul class="p-2 bg-base-100 rounded-t-none">
-						{#if servers.length !== 0}
-							{#each servers as localServer}
-								<li><a on:click={(_) => server.set(localServer)}>{localServer.servername}</a></li>
+						{#if $servers.length !== 0}
+							{#each $servers as localServer}
+								<li>
+									<a on:click={(_) => selectedServer.set(localServer)}>{localServer.servername}</a>
+								</li>
 							{/each}
 						{/if}
 					</ul>
 				</details>
+			</li>
+			<li>
+				<a href="/servers">
+					<Icon src={ComputerDesktop} size="20" />
+					Servers
+				</a>
 			</li>
 			<li>
 				<a href="/files">

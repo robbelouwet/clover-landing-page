@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
-	import { type Server } from '$lib/types';
 	import { Icon, CheckCircle, XCircle } from 'svelte-hero-icons';
 
 	let servername = '';

@@ -1,4 +1,4 @@
-<div class="pt-[20rem] hero min-h-full bg-base-200 rounded-lg">
+<div class="pt-[20rem] hero bg-base-200 rounded-lg">
 	<div class="hero-content flex-col lg:flex-row xl:gap-32">
 		<img
 			alt="hero"
@@ -16,7 +16,7 @@
 	</div>
 </div>
 
-<div class="hero min-h-full bg-base-200 rounded-lg">
+<div class="hero bg-base-200 rounded-lg">
 	<div class="hero-content flex-col lg:flex-row-reverse xl:gap-32">
 		<img
 			alt="hero"
@@ -34,7 +34,7 @@
 	</div>
 </div>
 
-<div class="hero min-h-full bg-base-200 rounded-lg">
+<div class="hero bg-base-200 rounded-lg">
 	<div class="hero-content flex-col lg:flex-row xl:gap-32">
 		<img
 			alt="hero"
@@ -52,7 +52,7 @@
 	</div>
 </div>
 
-<div class="hero min-h-full bg-base-200 rounded-lg">
+<div class="hero bg-base-200 rounded-lg">
 	<div class="hero-content flex-col lg:flex-row-reverse xl:gap-32">
 		<img
 			alt="hero"

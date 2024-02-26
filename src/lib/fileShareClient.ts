@@ -1,11 +1,11 @@
 import { get } from "svelte/store"
-import { server } from "./stores"
+import { selectedServer } from "./stores"
 import { type UserFolder } from "./types"
 import { env } from '$env/dynamic/public';
 
 export const loadFolderContent = async (folderPath: string = "") => {
-    if (get(server) === null) {
-        console.log("Server null: ", get(server))
+    if (get(selectedServer) === null) {
+        console.log("Server null: ", get(selectedServer))
         throw new Error("Loading folder content when user is not logged in!")
     }
 
@@ -16,7 +16,7 @@ export const loadFolderContent = async (folderPath: string = "") => {
         subfolders: []
     }
 
-    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&servername=${get(server)!.servername}`, {
+    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&servername=${get(selectedServer)!.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -52,11 +52,11 @@ export const loadFolderContent = async (folderPath: string = "") => {
 }
 
 export const loadFileContent = async (filepath: string) => {
-    if (get(server) === null) {
+    if (get(selectedServer) === null) {
         throw new Error("Loading file content when user is not logged in!")
     }
 
-    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&servername=${get(server)!.servername}`, {
+    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -67,11 +67,11 @@ export const loadFileContent = async (filepath: string) => {
 }
 
 export const upsertFileContent = async (content: string, filepath: string) => {
-    if (get(server) === null) {
+    if (get(selectedServer) === null) {
         throw new Error("Uploading file when user is not logged in!")
     }
 
-    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(server)!.servername}`, {
+    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

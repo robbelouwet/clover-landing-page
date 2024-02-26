@@ -1,11 +1,9 @@
 <script lang="ts">
 	import FileMenu from '$lib/components/file-menu/FileMenu.svelte';
 	import { upsertFileContent, loadFileContent, loadFolderContent } from '$lib/fileShareClient';
-	import { openFilePath, server } from '$lib/stores';
+	import { openFilePath, selectedServer } from '$lib/stores';
 	import type { UserFolder } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
-	// export let data;
 
 	let contents: string = '';
 	let folder: UserFolder | null = null;
@@ -18,20 +16,19 @@
 	});
 
 	const tryLoad = () => {
-		if (get(server) !== null)
+		if ($selectedServer !== null)
 			loadFolderContent()
 				.then((f) => (folder = f))
 				.catch(console.error);
 	};
 
-	server.subscribe((_) => tryLoad());
+	selectedServer.subscribe((_) => tryLoad());
 
 	onMount(tryLoad);
 </script>
 
 <div class="flex flex-col w-full lg:flex-row min-h-[80vh] p-5">
 	<div class="grid grid-cols-1 lg:w-[33vw] auto-rows-min">
-		<!-- <div><Breadcrumbs /></div> -->
 		<dv>
 			<h3>File Explorer</h3>
 		</dv>
