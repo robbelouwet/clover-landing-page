@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
 	import { Icon, CheckCircle, XCircle } from 'svelte-hero-icons';
+	import { modal } from '$lib/stores';
+	import { unauthorizedModal } from '$lib/types';
 
 	let servername = '';
 	let status = '';
@@ -20,6 +22,11 @@
 			}
 		})
 			.then((r) => {
+				if (r.status % 400 < 100) {
+					modal.set(unauthorizedModal);
+					throw new Error('Unauthorized');
+				}
+
 				if (r.status >= 200 && r.status <= 299) status = 'success';
 				else status = 'error';
 			})

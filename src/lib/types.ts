@@ -24,5 +24,16 @@ export type UserFolder = {
 
 export type UserFile = {
     name: string;
-    filepath: string
+    filepath: string;
 };
+
+export type Modal = {
+    // type: "success" | "info" | "warning" | "danger";
+    title: string;
+    message: string;
+}
+
+export const unauthorizedModal: Modal = {
+    title: 'Unauthorized',
+    message: 'Please log in before continuing'
+}

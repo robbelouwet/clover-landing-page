@@ -1,0 +1,20 @@
+{
+    "description": {
+        "text": "A Minecraft Server"
+    },
+    "enforcesSecureChat": true,
+    "players": {
+        "max": 20,
+        "online": 1,
+        "sample": [
+            {
+                "id": "a2a853e5-81c4-4014-8fd7-5682abe19e20",
+                "name": "Fr34kyz"
+            }
+        ]
+    },
+    "version": {
+        "name": "Paper 1.20.2",
+        "protocol": 764
+    }
+}

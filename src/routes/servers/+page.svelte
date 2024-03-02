@@ -8,11 +8,11 @@
 		<!-- head -->
 		<thead>
 			<tr>
-				<th class="w-[20%]">Server Name</th>
-				<th>Server Type</th>
-				<th class="w-[30%]">Server Host</th>
-				<th>Player Count</th>
-				<th>Ping</th>
+				<th>Server Name</th>
+				<th class="hidden sm:table-cell">Server Type</th>
+				<th>Server Host</th>
+				<th class="hidden sm:table-cell">Player Count</th>
+				<th class="hidden sm:table-cell">Ping</th>
 			</tr>
 		</thead>
 		<tbody>

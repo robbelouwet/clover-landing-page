@@ -1,6 +1,6 @@
 import { get } from "svelte/store"
-import { selectedServer } from "./stores"
-import { type UserFolder } from "./types"
+import { selectedServer, modal } from "./stores"
+import { unauthorizedModal, type UserFolder } from "./types"
 import { env } from '$env/dynamic/public';
 
 export const loadFolderContent = async (folderPath: string = "") => {
@@ -23,6 +23,12 @@ export const loadFolderContent = async (folderPath: string = "") => {
             'Accept': 'application/json'
         }
     })
+
+    if (response.status % 400 < 100) {
+        modal.set(unauthorizedModal)
+        throw new Error("Unauthorized")
+    }
+
     const contents: any = await response.json()
 
     console.log("Directory items: ", contents)
@@ -63,6 +69,12 @@ export const loadFileContent = async (filepath: string) => {
             'Accept': 'text/plain'
         }
     })
+
+    if (response.status % 400 < 100) {
+        modal.set(unauthorizedModal)
+        throw new Error("Unauthorized")
+    }
+
     return await response.text()
 }
 
@@ -71,7 +83,7 @@ export const upsertFileContent = async (content: string, filepath: string) => {
         throw new Error("Uploading file when user is not logged in!")
     }
 
-    await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
+    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -79,6 +91,11 @@ export const upsertFileContent = async (content: string, filepath: string) => {
         },
         body: content
     })
+
+    if (response.status % 400 < 100) {
+        modal.set(unauthorizedModal)
+        throw new Error("Unauthorized")
+    }
 }
 
 export const expandFolderRecursively: (

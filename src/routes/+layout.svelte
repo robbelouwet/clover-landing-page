@@ -3,8 +3,8 @@
 	import '../app.css';
 
 	import { onMount } from 'svelte';
-	import { selectedServer, servers } from '$lib/stores';
-	import { type Server } from '$lib/types';
+	import { modal, selectedServer, servers } from '$lib/stores';
+	import { unauthorizedModal, type Server } from '$lib/types';
 	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
 	import {
 		CommandLine,
@@ -26,7 +26,14 @@
 				Accept: 'application/json'
 			}
 		})
-			.then((data) => data.json())
+			.then((data) => {
+				console.log('DITTTT:', data.status);
+				if (data.status % 400 < 100) {
+					modal.set(unauthorizedModal);
+					throw new Error('Unauthorized');
+				}
+				return data.json();
+			})
 			.then((results) => {
 				servers.set(
 					results?.map((result: any) => {
