@@ -31,9 +31,11 @@ export type Modal = {
     // type: "success" | "info" | "warning" | "danger";
     title: string;
     message: string;
+    closeCallback: () => void;
 }
 
 export const unauthorizedModal: Modal = {
     title: 'Unauthorized',
-    message: 'Please log in before continuing'
+    message: 'Please log in before continuing',
+    closeCallback: () => null
 }

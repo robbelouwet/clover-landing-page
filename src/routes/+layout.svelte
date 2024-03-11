@@ -17,6 +17,7 @@
 		ComputerDesktop
 	} from 'svelte-hero-icons';
 	import { env } from '$env/dynamic/public';
+	import Modal from '$lib/components/Modal.svelte';
 
 	onMount(() => {
 		fetch(`${PUBLIC_BACKEND_HOST}/get-all-user-servers`, {
@@ -27,7 +28,6 @@
 			}
 		})
 			.then((data) => {
-				console.log('DITTTT:', data.status);
 				if (data.status % 400 < 100) {
 					modal.set(unauthorizedModal);
 					throw new Error('Unauthorized');
@@ -53,12 +53,13 @@
 	});
 </script>
 
+<Modal />
 <div class="drawer drawer-end">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content flex flex-col">
 		<!-- Navbar -->
 		<div class="w-full navbar bg-base-300">
-			<div class="flex-1 px-2 mx-2">Clover</div>
+			<div class="flex-1 px-2 mx-2"><a href="/">Clover</a></div>
 			<div class="flex-none">
 				<ul class="menu menu-horizontal">
 					<!-- Navbar menu content here -->
@@ -114,7 +115,7 @@
 				<details>
 					<summary>
 						<Icon src={Play} size="20" />
-						Connect
+						Select
 					</summary>
 					<ul class="p-2 bg-base-100 rounded-t-none">
 						{#if $servers.length !== 0}
@@ -130,7 +131,7 @@
 			<li>
 				<a href="/servers">
 					<Icon src={ComputerDesktop} size="20" />
-					Servers
+					Servers Overview
 				</a>
 			</li>
 			<li>
@@ -145,6 +146,21 @@
 					Console
 				</a>
 			</li>
+			<!-- 			<li>
+				<a>
+					<Icon src={AdjustmentsHorizontal} size="20" />
+					<div class="form-control">
+						<label class="label cursor-pointer p-0">
+							<span class="label-text">Live Mode</span>
+							<input
+								type="checkbox"
+								class="toggle toggle-success toggle-sm"
+								on:change={(e) => handleToggle(e)}
+							/>
+						</label>
+					</div>
+				</a>
+			</li> -->
 		</ul>
 	</div>
 </div>

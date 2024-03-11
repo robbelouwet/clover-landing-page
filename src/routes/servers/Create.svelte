@@ -9,9 +9,12 @@
 
 	const create = () => {
 		if (servername.length > 10 || servername.includes(' '))
-			alert(
-				"Server name must be shorter than 10 characters and can only container lower-case characters or '-'"
-			);
+			modal.set({
+				title: 'Invalid server name.',
+				message:
+					"Server name must be shorter than 10 characters and can only container lower-case characters or '-'",
+				closeCallback: () => null
+			});
 
 		status = 'deploying';
 		fetch(`${PUBLIC_BACKEND_HOST}/deploy-paper-dedicated?cpu=2&memory=4&servername=${servername}`, {
@@ -30,7 +33,10 @@
 				if (r.status >= 200 && r.status <= 299) status = 'success';
 				else status = 'error';
 			})
-			.catch(console.error);
+			.catch((e) => {
+				console.error(e);
+				status = 'error';
+			});
 	};
 </script>
 
