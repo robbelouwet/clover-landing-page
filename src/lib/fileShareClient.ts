@@ -87,7 +87,8 @@ export const upsertFileContent = async (content: string, filepath: string) => {
         method: 'POST',
         credentials: 'include',
         headers: {
-            'Content-Type': 'text/plain'
+            'Content-Type': 'text/plain',
+            'User-Agent': 'Foobar'  // Currently, the auth container fires a 403 because it thinks XSRF is taking place, this is a workaround
         },
         body: content
     })
