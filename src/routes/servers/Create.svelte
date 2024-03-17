@@ -17,13 +17,16 @@
 			});
 
 		status = 'deploying';
-		fetch(`${PUBLIC_BACKEND_HOST}/deploy-paper-dedicated?cpu=2&memory=4&servername=${servername}`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json'
+		fetch(
+			`${PUBLIC_BACKEND_HOST}/deploy?kind=paper-dedicated&cpu=2&memory=4&servername=${servername}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json'
+				}
 			}
-		})
+		)
 			.then((r) => {
 				if (r.status % 400 < 100) {
 					modal.set(unauthorizedModal);
@@ -72,6 +75,10 @@
 							/></a
 						>{/if}
 				</div>
+				<select class="select select-bordered w-full max-w-xs">
+					<option selected value="paper-dedicated">Paper 1.20.2</option>
+					<option value="bedrock-dedicated">Bedrock 1.20</option>
+				</select>
 				<div class="form-control mt-6">
 					<button
 						on:click={(_) => create()}
