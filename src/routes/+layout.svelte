@@ -107,8 +107,7 @@
 				<a
 					href={`${env.PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=/post-login-redirect`}
 				>
-					<Icon src={UserCircle} size="20" />
-					Login
+					<Icon src={UserCircle} size="20" />Login
 				</a>
 			</li>
 			<li>
