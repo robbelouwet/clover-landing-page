@@ -16,7 +16,6 @@
 		NoSymbol,
 		ComputerDesktop
 	} from 'svelte-hero-icons';
-	import { env } from '$env/dynamic/public';
 	import Modal from '$lib/components/Modal.svelte';
 
 	onMount(() => {
@@ -105,7 +104,7 @@
 			<!-- Sidebar content here -->
 			<li>
 				<a
-					href={`${env.PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=/post-login-redirect`}
+					href={`${PUBLIC_BACKEND_HOST}/.auth/login/google?post_login_redirect_uri=/post-login-redirect`}
 				>
 					<Icon src={UserCircle} size="20" />Login
 				</a>
