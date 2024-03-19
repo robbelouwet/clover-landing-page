@@ -86,7 +86,7 @@
 			<span class="loading loading-dots loading-sm"></span>
 		{/if}
 	</td>
-	<td class="break-all">{server.serverHost}:{server.port}</td>
+	<td class="break-all">{server.serverHost}</td>
 	<td class="hidden sm:table-cell"
 		>{#if pingResponse !== null}
 			<p>{pingResponse['players']['online']}/{pingResponse['players']['max']}</p>

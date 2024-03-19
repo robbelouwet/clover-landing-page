@@ -1,7 +1,7 @@
 import { get } from "svelte/store"
 import { selectedServer, modal } from "./stores"
 import { unauthorizedModal, type UserFolder } from "./types"
-import { env } from '$env/dynamic/public';
+import { PUBLIC_BACKEND_HOST } from "$env/static/public"
 
 export const loadFolderContent = async (folderPath: string = "") => {
     if (get(selectedServer) === null) {
@@ -16,7 +16,7 @@ export const loadFolderContent = async (folderPath: string = "") => {
         subfolders: []
     }
 
-    const response: any = await fetch(`${env.PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&servername=${get(selectedServer)!.servername}`, {
+    const response: any = await fetch(`${PUBLIC_BACKEND_HOST}/list-dir?path=${folderPath}&servername=${get(selectedServer)!.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -62,7 +62,7 @@ export const loadFileContent = async (filepath: string) => {
         throw new Error("Loading file content when user is not logged in!")
     }
 
-    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
+    const response = await fetch(`${PUBLIC_BACKEND_HOST}/get-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -83,9 +83,10 @@ export const upsertFileContent = async (content: string, filepath: string) => {
         throw new Error("Uploading file when user is not logged in!")
     }
 
-    const response = await fetch(`${env.PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
+    const response = await fetch(`${PUBLIC_BACKEND_HOST}/upsert-file?filepath=${filepath}&servername=${get(selectedServer)!.servername}`, {
         method: 'POST',
         credentials: 'include',
+        // mode: "no-cors",
         headers: {
             'Content-Type': 'text/plain',
             'User-Agent': 'Foobar'  // Currently, the auth container fires a 403 because it thinks XSRF is taking place, this is a workaround

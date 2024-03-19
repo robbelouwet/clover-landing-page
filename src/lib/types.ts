@@ -6,7 +6,7 @@ export type Server = {
     serverHost: string
 
     /** @property {number} port The port of this user's server, the STDIO server is this port + 1. */
-    port: number
+    // port: number
 
     /** @property {string} share The storage account file share name of this user's game files. */
     share: string
