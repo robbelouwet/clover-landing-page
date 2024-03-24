@@ -4,7 +4,6 @@
 	let isOpen: boolean = false;
 
 	modal.subscribe((v) => {
-		console.log('Modal changed!');
 		if (v != null) isOpen = true;
 	});
 </script>

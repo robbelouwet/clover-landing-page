@@ -2,6 +2,9 @@ export type Server = {
     /** @property {string} username The username of the user. */
     // username: string
 
+    /** @property {"bedrock" | "java"} kind The kind of minecraft server. */
+    kind: "bedrock" | "java"
+
     /** @property {string} serverHost The host of this user's server. */
     serverHost: string
 

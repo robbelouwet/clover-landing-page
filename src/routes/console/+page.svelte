@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { selectedServer } from '$lib/stores';
-	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 
 	let consoleOutput: string[] = [];
@@ -8,9 +8,8 @@
 	let socket: WebSocket;
 
 	const connectWebSocket = () => {
-		if (get(selectedServer) === null)
-			throw new Error('Opening ws channel when user is not logged in!');
-		const url = `ws://${get(selectedServer)!.serverHost}:${get(selectedServer)!.port + 1}`;
+		//if (get(selectedServer) === null) throw new Error('Opening ws channel when user is not logged in!');
+		const url = `ws://${get(selectedServer)!.serverHost}:8765`;
 		console.log('server: ', get(selectedServer), ', Connecting ws to ', url, '!');
 		socket = new WebSocket(url);
 

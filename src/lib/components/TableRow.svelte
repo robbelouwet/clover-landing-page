@@ -36,13 +36,18 @@
 	};
 
 	const pingState = () => {
-		fetch(`${PUBLIC_BACKEND_HOST}/ping-server?servername=${server.servername}`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json'
+		fetch(
+			`${PUBLIC_BACKEND_HOST}/ping-${
+				server.kind === 'bedrock' ? 'bedrock' : 'java'
+			}-server?servername=${server.servername}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json'
+				}
 			}
-		})
+		)
 			.then((data) => {
 				if (data.status % 400 < 100) {
 					modal.set(unauthorizedModal);
@@ -66,7 +71,7 @@
 		<div class="flex items-center gap-3">
 			<div class="avatar">
 				<div class="mask mask-squircle w-12 h-12">
-					<img src="/dirt.png" alt="Minecraft dirt" />
+					<img src={`/dirt-${server.kind}.png`} alt="Minecraft dirt" />
 				</div>
 			</div>
 			<div>

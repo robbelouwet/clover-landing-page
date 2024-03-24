@@ -38,9 +38,10 @@
 					results?.map((result: any) => {
 						const localServer: Server = {
 							serverHost: result['server_host'],
-							port: result['server_port'],
+							//port: result['server_port'],
 							share: result['share'],
-							servername: result['server_name']
+							servername: result['server_name'],
+							kind: result['kind']
 						};
 						return localServer;
 					})

@@ -6,6 +6,12 @@
 
 	let servername = '';
 	let status = '';
+	let selectedKind = 'paper';
+
+	const update = (v: any) => {
+		console.log('New selection: ', v.value);
+		selectedKind = v.value;
+	};
 
 	const create = () => {
 		if (servername.length > 10 || servername.includes(' '))
@@ -18,7 +24,7 @@
 
 		status = 'deploying';
 		fetch(
-			`${PUBLIC_BACKEND_HOST}/deploy?kind=paper-dedicated&cpu=2&memory=4&servername=${servername}`,
+			`${PUBLIC_BACKEND_HOST}/deploy?kind=${selectedKind}&cpu=2&memory=4&servername=${servername}`,
 			{
 				method: 'GET',
 				credentials: 'include',
@@ -47,7 +53,7 @@
 	<div class="hero-content flex-col lg:flex-row-reverse">
 		<div class="text-center lg:text-left">
 			<h1 class="text-5xl font-bold">Create a server!</h1>
-			<p class="py-6">This will create a Minecraft 1.20.2 Java Edition server for you.</p>
+			<p class="py-6">This will create a Minecraft 1.20 server for you.</p>
 		</div>
 		<div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<form class="card-body">
@@ -75,9 +81,9 @@
 							/></a
 						>{/if}
 				</div>
-				<select class="select select-bordered w-full max-w-xs">
-					<option selected value="paper-dedicated">Paper 1.20.2</option>
-					<option value="bedrock-dedicated">Bedrock 1.20</option>
+				<select class="select select-bordered w-full max-w-xs" on:change={(e) => update(e.target)}>
+					<option selected value="paper">Paper 1.20.2</option>
+					<option value="bedrock">Bedrock 1.20</option>
 				</select>
 				<div class="form-control mt-6">
 					<button

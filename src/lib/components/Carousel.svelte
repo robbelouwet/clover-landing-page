@@ -15,11 +15,13 @@
 		CreditCard,
 		PuzzlePiece,
 		ComputerDesktop,
+		Wallet,
 		type IconSource
 	} from 'svelte-hero-icons';
 	let carouselItems: [string, IconSource, string][] = [
 		['100% uptime!', ServerStack, '3'],
 		['Forget RAM memory and CPU! Rent a server that just works', Users, '1'],
+		['Pay per hour! Not playing = not paying.', Wallet, '2'],
 		['Vanilla, Bedrock, Paper, Spigot, Forge, we have it all!', Square3Stack3d, '2'],
 		['One-click server upgrade!', CursorArrowRays, '3'],
 		['More than 20 regions worldwide!', GlobeAlt, '2'],
@@ -31,6 +33,7 @@
 			'2'
 		],
 		['Upload your own world and start where you left off!', CloudArrowUp, '3'],
+		['Free domain!', CursorArrowRays, '3'],
 		['Custom world presets', WrenchScrewdriver, '3'],
 		[
 			'Thousands of mods and plugins, literally every mod at CurseForge can be set up with a single click!',
