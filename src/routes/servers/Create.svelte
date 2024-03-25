@@ -6,10 +6,10 @@
 
 	let servername = '';
 	let status = '';
-	let selectedKind = 'paper';
+	let selectedKind = 'java';
 
 	const update = (v: any) => {
-		console.log('New selection: ', v.value);
+		//console.log('New selection: ', v.value);
 		selectedKind = v.value;
 	};
 
@@ -82,7 +82,7 @@
 						>{/if}
 				</div>
 				<select class="select select-bordered w-full max-w-xs" on:change={(e) => update(e.target)}>
-					<option selected value="paper">Paper 1.20.2</option>
+					<option selected value="java">Paper 1.20.2</option>
 					<option value="bedrock">Bedrock 1.20</option>
 				</select>
 				<div class="form-control mt-6">
