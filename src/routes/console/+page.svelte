@@ -9,7 +9,7 @@
 
 	const connectWebSocket = () => {
 		//if (get(selectedServer) === null) throw new Error('Opening ws channel when user is not logged in!');
-		const url = `ws://${get(selectedServer)!.serverHost}:8765`;
+		const url = `wss://${get(selectedServer)!.serverHost}:8765`;
 		console.log('server: ', get(selectedServer), ', Connecting ws to ', url, '!');
 		socket = new WebSocket(url);
 
