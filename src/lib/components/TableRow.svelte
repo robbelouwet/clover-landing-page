@@ -16,11 +16,6 @@
 	let deleting: boolean = false;
 	let serverState: 'offline' | 'online' | 'loading' | 'unknown' = 'loading';
 
-	$: if (serverState === 'online') {
-		pingServerRequest(server, setPing);
-		console.log('pingresp: ', pingResponse);
-	}
-
 	const deleteServer = () => {
 		console.log('Deleting!');
 		deleting = true;
@@ -33,7 +28,11 @@
 	};
 
 	onMount(() => {
-		getServerStateRequest(server.servername, (s) => (serverState = s));
+		getServerStateRequest(server.servername, (s) => {
+			serverState = s;
+			console.log('pingresp: ', pingResponse, 'serverState: ', serverState);
+			if (serverState === 'online') pingServerRequest(server, setPing);
+		});
 	});
 </script>
 

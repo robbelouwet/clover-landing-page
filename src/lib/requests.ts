@@ -55,8 +55,7 @@ export const deleteServerRequest = (server: Server) => {
 
 export const pingServerRequest = (server: Server, successCallback: any) => {
     fetch(
-        `${PUBLIC_BACKEND_HOST}/ping-${server.kind === 'bedrock' ? 'bedrock' : 'java'
-        }-server?servername=${server.servername}`,
+        `${PUBLIC_BACKEND_HOST}/ping-${server.kind}-server?servername=${server.servername}`,
         {
             method: 'GET',
             credentials: 'include',
