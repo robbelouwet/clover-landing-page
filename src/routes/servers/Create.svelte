@@ -3,6 +3,7 @@
 	import { Icon, CheckCircle, XCircle } from 'svelte-hero-icons';
 	import { modal } from '$lib/stores';
 	import { unauthorizedModal } from '$lib/types';
+	import { deployServerRequest } from '$lib/requests';
 
 	let servername = '';
 	let status = '';
@@ -23,29 +24,7 @@
 			});
 
 		status = 'deploying';
-		fetch(
-			`${PUBLIC_BACKEND_HOST}/deploy?kind=${selectedKind}&cpu=2&memory=4&servername=${servername}`,
-			{
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json'
-				}
-			}
-		)
-			.then((r) => {
-				if (r.status % 400 < 100) {
-					modal.set(unauthorizedModal);
-					throw new Error('Unauthorized');
-				}
-
-				if (r.status >= 200 && r.status <= 299) status = 'success';
-				else status = 'error';
-			})
-			.catch((e) => {
-				console.error(e);
-				status = 'error';
-			});
+		deployServerRequest(selectedKind, servername, (s) => (status = s));
 	};
 </script>
 

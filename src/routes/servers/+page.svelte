@@ -15,7 +15,8 @@
 					<th class="hidden sm:table-cell">Server Type</th>
 					<th>Server Host</th>
 					<th class="hidden sm:table-cell">Player Count</th>
-					<th class="hidden sm:table-cell">Ping</th>
+					<th class="hidden sm:table-cell">Usage</th>
+					<th></th><!-- Leave room for nameless column -->
 					<th class="hidden sm:table-cell"></th><!-- Leave room for nameless column -->
 				</tr>
 			</thead>

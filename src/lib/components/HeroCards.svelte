@@ -6,10 +6,13 @@
 			class="h-80 w-full object-cover rounded-lg shadow-lg"
 		/>
 		<div class="text-center max-w-lg">
-			<h1 class="text-3xl font-bold">Improve Cross-team Connections</h1>
+			<h1 class="text-3xl font-bold">Forget RAM memory and CPU</h1>
 			<p class="py-6">
-				Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-				quasi. In deleniti eaque aut repudiandae et a id nisi.
+				Are more players joining your server? Are you installing more mods? Is your server
+				struggling to keep up? You'll be presented with a short loading screen, while we upgrade
+				your server in the background.
+				<br />
+				Pay per active player, per hour, with automatic shutdowns due to inactivity.
 			</p>
 			<!-- <button class="btn btn-primary w-full">Get Started</button> -->
 		</div>
@@ -24,10 +27,10 @@
 			class="h-80 w-full object-cover rounded-lg shadow-lg"
 		/>
 		<div class="text-center max-w-lg">
-			<h1 class="text-3xl font-bold">Foster Collaborations</h1>
+			<h1 class="text-3xl font-bold">Dedicated servers</h1>
 			<p class="py-6">
-				Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-				quasi. In deleniti eaque aut repudiandae et a id nisi.
+				Do you prefer certainty and control? No problem! Rent a dedicated server with fixed hardware
+				with a fixed cost per month!
 			</p>
 			<!-- <button class="btn btn-primary w-full">Get Started</button> -->
 		</div>

@@ -1,75 +1,46 @@
 <script lang="ts">
-	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
-	import { modal, selectedServer, servers } from '$lib/stores';
-	import { unauthorizedModal, type Server } from '$lib/types';
+	import {
+		deleteServerRequest,
+		getServerStateRequest,
+		pingServerRequest,
+		startServerRequest,
+		stopServerRequest
+	} from '$lib/requests';
+	import { modal } from '$lib/stores';
+	import { type Server } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { ChartBar, Trash, Icon } from 'svelte-hero-icons';
+	import { ChartBar, Trash, Icon, Play, Stop, QuestionMarkCircle } from 'svelte-hero-icons';
 
 	export let server: Server;
 	let pingResponse: any = null;
 	let deleting: boolean = false;
+	let serverState: 'offline' | 'online' | 'loading' | 'unknown' = 'loading';
+
+	$: if (serverState === 'online') {
+		pingServerRequest(server, setPing);
+		console.log('pingresp: ', pingResponse);
+	}
 
 	const deleteServer = () => {
 		console.log('Deleting!');
 		deleting = true;
-		fetch(`${PUBLIC_BACKEND_HOST}/delete-paper-dedicated?servername=${server.servername}`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json'
-			}
-		})
-			.then((resp) => {
-				if (resp.status % 400 < 100) {
-					modal.set(unauthorizedModal);
-					throw new Error('Unauthorized');
-				}
-				if (resp.ok) {
-					const e = $servers.find((s) => s.servername === server.servername);
-					const i = $servers.indexOf(e!);
-					if ($selectedServer?.servername === server.servername) selectedServer.set(null);
-					$servers.splice(i, 1);
-					servers.set([...$servers]);
-				}
-			})
-			.catch(console.error);
+
+		deleteServerRequest(server);
 	};
 
-	const pingState = () => {
-		fetch(
-			`${PUBLIC_BACKEND_HOST}/ping-${
-				server.kind === 'bedrock' ? 'bedrock' : 'java'
-			}-server?servername=${server.servername}`,
-			{
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json'
-				}
-			}
-		)
-			.then((data) => {
-				if (data.status % 400 < 100) {
-					modal.set(unauthorizedModal);
-					throw new Error('Unauthorized');
-				}
-				return data.json();
-			})
-			.then((response) => {
-				pingResponse = response;
-			})
-			.catch(console.error);
+	const setPing = (p: any) => {
+		pingResponse = p;
 	};
 
 	onMount(() => {
-		pingState();
+		getServerStateRequest(server.servername, (s) => (serverState = s));
 	});
 </script>
 
 <tr>
 	<td class="">
 		<div class="flex items-center gap-3">
-			<div class="avatar">
+			<div class="hidden sm:block avatar">
 				<div class="mask mask-squircle w-12 h-12">
 					<img src={`/dirt-${server.kind}.png`} alt="Minecraft dirt" />
 				</div>
@@ -81,32 +52,56 @@
 		</div>
 	</td>
 	<td class="hidden sm:table-cell">
-		{#if pingResponse !== null}
+		{#if serverState === 'online' && pingResponse !== null}
 			{pingResponse['description']['text']}
 			<br />
 			<span class="badge badge-ghost badge-sm bg-green">
 				{pingResponse['version']['name']}
 			</span>
+		{:else if serverState === 'offline'}
+			N/A
 		{:else}
 			<span class="loading loading-dots loading-sm"></span>
 		{/if}
 	</td>
 	<td class="break-all">{server.serverHost}</td>
 	<td class="hidden sm:table-cell"
-		>{#if pingResponse !== null}
+		>{#if serverState === 'online' && pingResponse !== null}
 			<p>{pingResponse['players']['online']}/{pingResponse['players']['max']}</p>
+		{:else if serverState === 'offline'}
+			N/A
 		{:else}
 			<span class="loading loading-dots loading-sm"></span>
 		{/if}
 	</td>
 	<td class="hidden sm:table-cell">
-		{#if pingResponse !== null}
-			<Icon class="inline-block align-midle" src={ChartBar} size="20" style="color: green" solid />
-
-			<!-- Change to pingResponse ping time originating from ping packet? -->
-			<p class="inline-block align-middle">6.3ms</p>
+		{#if serverState === 'online' && pingResponse !== null}
+			<p class="inline-block align-middle">8h45</p>
+		{:else if serverState === 'offline'}
+			N/A
 		{:else}
 			<span class="loading loading-dots loading-sm"></span>{/if}
+	</td>
+	<td>
+		{#if serverState === 'offline'}
+			<button
+				on:click={() => startServerRequest(server.servername, (s) => (serverState = s))}
+				class="btn btn-circle btn-outline btn-sm btn-success"
+			>
+				<Icon src={Play} class="pl-1" size={'1.7rem'} />
+			</button>
+		{:else if serverState === 'online'}
+			<button
+				on:click={() => stopServerRequest(server.servername, (s) => (serverState = s))}
+				class="btn btn-circle btn-outline btn-sm btn-error"
+			>
+				<Icon src={Stop} class="pl-[0.036rem]" size={'1.7rem'} />
+			</button>
+		{:else if serverState === 'loading'}
+			<span class="loading loading-spinner loading-md"></span>
+		{:else}
+			<Icon src={QuestionMarkCircle} size={'1.7rem'} />
+		{/if}
 	</td>
 	<td class="hidden sm:table-cell">
 		{#if deleting}

@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Footer from '$lib/components/Footer.svelte';
 	import '../app.css';
-
 	import { onMount } from 'svelte';
-	import { modal, selectedServer, servers } from '$lib/stores';
-	import { unauthorizedModal, type Server } from '$lib/types';
+	import { selectedServer, servers } from '$lib/stores';
+	import { fetchAllUserServersRequest } from '$lib/requests';
 	import { PUBLIC_BACKEND_HOST } from '$env/static/public';
 	import {
 		CommandLine,
@@ -18,39 +17,7 @@
 	} from 'svelte-hero-icons';
 	import Modal from '$lib/components/Modal.svelte';
 
-	onMount(() => {
-		fetch(`${PUBLIC_BACKEND_HOST}/get-all-user-servers`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json'
-			}
-		})
-			.then((data) => {
-				if (data.status % 400 < 100) {
-					modal.set(unauthorizedModal);
-					throw new Error('Unauthorized');
-				}
-				return data.json();
-			})
-			.then((results) => {
-				servers.set(
-					results?.map((result: any) => {
-						const localServer: Server = {
-							serverHost: result['server_host'],
-							//port: result['server_port'],
-							share: result['share'],
-							servername: result['server_name'],
-							kind: result['kind']
-						};
-						return localServer;
-					})
-				);
-				selectedServer.set($servers[0] ?? null);
-				console.log('Found user servers: ', $servers, ', selected: ', $selectedServer);
-			})
-			.catch(console.error);
-	});
+	onMount(() => fetchAllUserServersRequest());
 </script>
 
 <Modal />
