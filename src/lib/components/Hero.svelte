@@ -11,8 +11,8 @@
 	<div class="hero-content text-center">
 		<div class="max-w-md">
 			<h1 class="mb-5 text-5xl font-bold">Minecraft Server Hosting</h1>
-			<p class="mb-5">Cheap, Resilient minecraft servers that Just. Work.</p>
-			<button class="btn btn-primary">Get Started</button>
+			<p class="mb-5">Cheap, resilient minecraft servers that Just. Work.</p>
+			<a href="/servers?create=true"><button class="btn btn-primary">Get Started</button></a>
 		</div>
 	</div>
 	<Carousel />
