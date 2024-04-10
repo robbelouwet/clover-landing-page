@@ -3,7 +3,7 @@
 </script>
 
 <div class="carousel-item">
-	<div class="card w-96 bg-base-100 shadow-xl glass w-[13vw] m-5">
+	<div class="card w-96 bg-base-100 shadow-xl glass w-[15rem] m-5">
 		<figure>
 			<img src={data[3]} alt="Shoes" />
 		</figure>

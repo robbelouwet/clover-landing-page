@@ -23,7 +23,7 @@
 <div class="bg-base-300 rounded-box place-items-center overflow-x-auto text-center">
 	<div class="center carousel carousel-center max-w p-4 space-x-4">
 		<div class="carousel-item">
-			<div class="card w-96 bg-base-100 shadow-xl glass w-[13vw] m-5">
+			<div class="card w-96 bg-base-100 shadow-xl glass w-[15rem] m-5">
 				<figure>
 					<img src="/consumption.jpg" alt="Shoes" />
 				</figure>
