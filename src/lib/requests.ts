@@ -4,8 +4,14 @@ import { modal, selectedServer, servers } from "./stores";
 import { unauthorizedModal, type Server } from "./types";
 
 export const deployServerRequest = (selectedKind: string, servername: string, callback: (s: any) => void) => {
+
+    let deployUrl = ''
+    if (selectedKind === "consumption")
+        deployUrl = `${PUBLIC_BACKEND_HOST}/deploy-dedicated?kind=${selectedKind}&cpu=2&memory=4096&servername=${servername}`
+    else deployUrl = `${PUBLIC_BACKEND_HOST}/deploy-consumption?cpu=2&memory=4096&servername=${servername}`
+
     fetch(
-        `${PUBLIC_BACKEND_HOST}/deploy-dedicated?kind=${selectedKind}&cpu=2&memory=4096&servername=${servername}`,
+        deployUrl,
         {
             method: 'GET',
             credentials: 'include',
@@ -30,7 +36,7 @@ export const deployServerRequest = (selectedKind: string, servername: string, ca
 }
 
 export const deleteServerRequest = (server: Server) => {
-    fetch(`${PUBLIC_BACKEND_HOST}/delete-paper-dedicated?servername=${server.servername}`, {
+    fetch(`${PUBLIC_BACKEND_HOST}/delete-${server.tier === "dedicated" ? "dedicated" : "consumption"}?servername=${server.servername}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -55,7 +61,7 @@ export const deleteServerRequest = (server: Server) => {
 
 export const pingServerRequest = (server: Server, successCallback: any) => {
     fetch(
-        `${PUBLIC_BACKEND_HOST}/ping-${server.kind}-server?servername=${server.servername}`,
+        `${PUBLIC_BACKEND_HOST}/ping-${server.kind === "bedrock" ? "bedrock" : "java"}-server?servername=${server.servername}`,
         {
             method: 'GET',
             credentials: 'include',
@@ -99,10 +105,12 @@ export const fetchAllUserServersRequest = () => {
                 results?.map((result: any) => {
                     const localServer: Server = {
                         serverHost: result['server_host'],
+                        consolePort: result['console_port'],
                         //port: result['server_port'],
                         share: result['share'],
                         servername: result['server_name'],
-                        kind: result['kind']
+                        kind: result['kind'],
+                        tier: result['tier']
                     };
                     return localServer;
                 })

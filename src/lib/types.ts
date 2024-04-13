@@ -5,8 +5,14 @@ export type Server = {
     /** @property {"bedrock" | "java"} kind The kind of minecraft server. */
     kind: "bedrock" | "java"
 
+    /** @property {"dedicated" | "consumption"} tier The server tier. */
+    tier: "dedicated" | "consumption"
+
     /** @property {string} serverHost The host of this user's server. */
     serverHost: string
+
+    /** @property {number} consolePort The port for the console if this is a consumption server. */
+    consolePort: number | null
 
     /** @property {number} port The port of this user's server, the STDIO server is this port + 1. */
     // port: number

@@ -28,11 +28,16 @@
 	};
 
 	onMount(() => {
-		getServerStateRequest(server.servername, (s) => {
-			serverState = s;
-			console.log('pingresp: ', pingResponse, 'serverState: ', serverState);
-			if (serverState === 'online') pingServerRequest(server, setPing);
-		});
+		if (server.tier !== 'consumption')
+			getServerStateRequest(server.servername, (s) => {
+				serverState = s;
+				console.log('pingresp: ', pingResponse, 'serverState: ', serverState);
+				if (serverState === 'online') pingServerRequest(server, setPing);
+			});
+		else {
+			serverState = 'online';
+			pingServerRequest(server, setPing);
+		}
 	});
 </script>
 

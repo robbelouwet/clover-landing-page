@@ -4,10 +4,10 @@
 
 <div
 	class="hero min-h-[90vh] bg-gradient-to-b from-inherit text-white saturate-200"
-	style="background-image: url(background.jpg);"
+	style="background-image: url(minecraft_wallpaper6.jpg);"
 >
 	<!-- <Menu /> -->
-	<div class="hero-overlay bg-opacity-60"></div>
+	<div class="hero-overlay bg-opacity-65"></div>
 	<div class="hero-content text-center">
 		<div class="max-w-md">
 			<h1 class="mb-5 text-5xl font-bold">Minecraft Server Hosting</h1>

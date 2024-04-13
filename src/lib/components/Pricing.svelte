@@ -31,7 +31,7 @@
 					<b><p class="text-center" style="font-size: 1.5rem;">It just works.</p></b>
 					<b
 						><p class="text-center" style="font-size: large;">
-							&euro;{0.08}<br />per player<br />per hour
+							&euro;{0.05}<br />per player<br />per hour
 						</p></b
 					>
 					<div class="card-actions justify-center">
