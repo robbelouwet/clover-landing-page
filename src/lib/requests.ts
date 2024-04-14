@@ -6,7 +6,7 @@ import { unauthorizedModal, type Server } from "./types";
 export const deployServerRequest = (selectedKind: string, servername: string, callback: (s: any) => void) => {
 
     let deployUrl = ''
-    if (selectedKind === "consumption")
+    if (selectedKind === "bedrock" || selectedKind === "paper")
         deployUrl = `${PUBLIC_BACKEND_HOST}/deploy-dedicated?kind=${selectedKind}&cpu=2&memory=4096&servername=${servername}`
     else deployUrl = `${PUBLIC_BACKEND_HOST}/deploy-consumption?cpu=2&memory=4096&servername=${servername}`
 
