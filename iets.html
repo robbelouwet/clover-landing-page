@@ -1,0 +1,511 @@
+<html>
+
+<head>
+    <title>Implications of the Proposed Quantum Attack on LWE</title>
+    <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+        src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+    <h1>Implications of the Proposed Quantum Attack on LWE</h1>
+    On April 10th 2024 Yilei Chen published a paper on ePrint
+    entitled <a href="https://eprint.iacr.org/2024/555"><em>Quantum Algorithms for Lattice Problems</em></a>.
+    In it he proposes a "polynomial time" quantum algorithm
+    for certain parameters sets for the Learning-With-Errors (LWE)
+    problem.
+    This is important as LWE forms the basis of the majority of the
+    post-quantum algorithms selected by NIST, and it also forms
+    the basis of a number of cryptographic constructions which
+    offer advanced functionalities such as Fully Homomorphic Encryption
+    (FHE).
+    In this note I try to work out what the implications of this
+    work are.
+
+    <h4>Caveats</h4>
+    The following should be read with a number of caveats in the
+    back of ones mind.
+    The most notable of these are:
+    <ol>
+        <li>I am not an expert in quantum algorithms.
+        </li>
+        <li>The paper of Chen has not yet been peer reviewed, so
+            it may contain some errors.
+        </li>
+        <li>Quantum computers may never be built. Indeed it is
+            a running joke that quantum computers are always
+            ten years in the future!
+        </li>
+    </ol>
+
+    <h2>The LWE Problem</h2>
+    So we are all on the same page let us define the LWE problem
+    itself.
+    This is a noisy version of linear algebra. It is (in its most
+    basic form) parametrized by four values $n, m, q \in \mathbb{N}$,
+    $\alpha \in [0,1]$.
+
+    <p>
+
+        The value $q$ is used to define the modulus in modular
+        reduction.
+        In what follows we assume that we represent $\mathbb{Z}_q$
+        as the integer values in the range $(-q/2,\ldots,q/2]$, i.e.
+        we take a centered reduction in all modular operations.
+
+    </p>
+    <p>
+
+        The value $\alpha$ is used to define a distribution $D$.
+        Usually this is chosen to be a Gaussian like distribution on
+        $\mathbb{Z}$ with standard deviation $\alpha \cdot q/\sqrt{2 \cdot \pi}$,
+        although other distributions (such as a uniform distribution
+        with roughly the same standard deviation) could also be used.
+        In any case the distribution $D$ produces an integer value
+        in the range $[-c \cdot \alpha \cdot q, \ldots, c \cdot \alpha \cdot q]$
+        with overwhelming probability for some small constant $c$.
+        One can think of this $c$ as say $10$ in what follows.
+
+    </p>
+    <p>
+
+        The LWE problem is defined by a secret vector $\mathbf{s} \in \mathbb{Z_q}^n$
+        and a secret vector $\mathbf{e} \in D^m$, i.e. we select $\mathbf{e}$
+        from the product of $m$ copies of the distribution $D$.
+        Thus $\mathbf{e}$ contains $m$ "small" values.
+
+    </p>
+    <p>
+
+        Then a public matrix $A$ of dimension $m \times n$ is selected
+        with entries selected in $\mathbb{Z_q}$, and the value
+        $$\mathbf{y} = A \cdot \mathbf{s} + \mathbf{e} \pmod{q} $$
+        is computed.
+
+    </p>
+    <p>
+
+        The (computational) LWE problem is to recover $\mathbf{s}$
+        from the pair $(A, \mathbf{y})$.
+        There is also a decisional variant, which is more used in
+        cryptographic definitions, but it is essentially as hard
+        as the computational version and so we will not consider
+        it further here.
+
+    </p>
+    <p>
+
+        A key point to note, from a complexity point of view, is the
+        following.
+        In complexity theory usually looks at complexity as
+        a function of the size of the input to the problem.
+        The size of the input problem in LWE is
+        $$ n \cdot (m+1) \cdot \log_2 q \approx n \cdot m \cdot \log_2 q. $$
+        Thus the size does not depend on $\alpha$.
+        When talking about a polynomial time algorithm to solve
+        LWE (in the normal complexity theoretic sense) we should
+        only consider algorithms whose complexity is a polynomial
+        function of $ n \cdot m \cdot \log_2 q$.
+
+    </p>
+    <p>
+
+        The value $n$ is called the LWE dimension and the value
+        $m$ denotes the number of "LWE samples".
+        Just as in normal linear algebra one requires at least
+        as many equations as variables in order to fix the
+        solution, one requires $m \ge n$ here in order to fix
+        $\mathbf{s}$.
+        This means we require the number of samples
+        to be $m \ge \Omega(n \cdot \log q)$.
+
+    </p>
+    <p>
+
+        But $\alpha$ is crucial to the hardness of LWE:
+    </p>
+    <ul>
+        <li>
+            If $\alpha=0$ then one can interpret this as there being
+            no error vector $\mathbf{e}$.
+            Thus in such a situation the LWE problem is just normal
+            linear algebra and naive algorithms can solve it in (essentially)
+            quadratic time complexity.
+        </li>
+        <li>
+            If $\alpha \approx 1$ then the equations are basically
+            random, and no algorithm will be able to recover $\mathbf{s}$,
+            as the equations contain essentially no information about $\mathbf{s}$
+            to aid in the recovery.
+        </li>
+    </ul>
+
+    The value of $\alpha$ is important in applications:
+    <ol>
+        <li>
+            For applications such as traditional Public Key Encryption
+            (as in <a href="https://en.wikipedia.org/wiki/Kyber">Kyber</a>)
+            the standard deviation of the distribution $D$ is chosen
+            to be the fixed value of $\sqrt{(3+1)/2}=2$ (since the distribution
+            is the NewHope distribution with parameter $B=3$).
+            Thus we have $\alpha \cdot q = 2 \cdot \sqrt{2 \cdot \pi} = \sqrt{8 \cdot \pi}$,
+            i.e. $\alpha \cdot q$ is constant.
+            However, we have $q$ as the fixed value of $q=3329$,
+            and so $\alpha = 0.0015 \approx q^{-0.801}$.
+            So $\alpha \cdot q \approx q^{0.1987}$.
+            In Kyber we have $n \approx q$.
+        </li>
+        <li>
+            For Public Key Signatures (as in
+            <a href="https://pq-crystals.org/dilithium/index.shtml">Dilithium</a>)
+            the distribution $D$ (in the Dilithium secret key)
+            is a uniform distribution in the range $[-\eta,\ldots,\eta]$,
+            where $\eta$ is $2$ or $4$.
+            However the modulus $q$ in Dilithium is much larger than
+            in Kyber, being $q=8380417$.
+            Thus we have a standard deviation of $D$ of at most
+            $\sqrt{(2 \cdot \eta)^2/12} = 4/\sqrt{3}$,
+            and so $\alpha \cdot q = \sqrt{64 \cdot \pi/3} \approx q^{0.1318}$.
+            In Dilthium we have $n = 5 \cdot 256$ for the Level 3 parameters.
+        </li>
+        <li>
+            For applications such as levelled FHE (as typified by the
+            BGV and BFV FHE schemes) the depth of the supported
+            homomorphic operations is governed by the gap between
+            the values $q$ and $\alpha \cdot q$, i.e. a very very small
+            value of $\alpha$ is desired.
+            For such schemes one can think of $\alpha \cdot q$
+            as being a small constant.
+            Indeed one can think of $\alpha \cdot q$ as being the
+            same value as in Kyber, i.e. $\sqrt{8 \cdot \pi}$.
+            But then one then picks $n, m$ and $q$ to obtain both security
+            and homomorphic depth.
+            This results in very large values of $q$ indeed, for
+            example one could have $q \approx 2^{1024}$, in which case
+            $\alpha \cdot q \approx q^{0.00227}$.
+            For BGV typical values of $n$, with $q \approx 2^{1024}$,
+            are of the order of $2^{15}$ or $2^{16}$.
+            (See <a href="https://eprint.iacr.org/2014/873">
+                Bootstrapping for HElib</a> for a discussion
+            of parameters for BGV which support bootstrapping).
+        </li>
+        <li>
+            For applications such as FHE schemes which support
+            efficient bootstrapping (as typified by TFHE and FHEW), one does
+            not need a huge gap between $q$ and $\alpha \cdot q$.
+            Indeed for these one can think of $\alpha$ (for the purposes
+            of this post we think of TFHE with $q=2^{64}$)
+            as being of the order of $1/\sqrt{q}$, and so $\alpha \cdot q \approx \sqrt{q}$.
+            For such TFHE parameters the dimension $n$ is under $2^{11}$.
+        </li>
+    </ol>
+
+    <p>
+
+        This importance of the value of $\alpha \cdot q$ has been known for a
+        long time <a href="https://en.wikipedia.org/wiki/Learning_with_errors#Regev's_result">
+            Regev's original hardness result</a> for LWE only holds when
+        $\alpha \cdot q &gt; 2 \sqrt{n}$.
+        Interestingly this inequality is only satisfied for the TFHE
+        style parameters above, it does not hold for the parameter sets
+        for Kyber, Dilithium or BGV.
+
+    </p>
+    <p>
+        The classical manner to determine parameters for the LWE
+        problem is to use the <a href="https://lattice-estimator.readthedocs.io/en/latest/">
+            lattice-estimator</a>.
+        This runs all known lattice algorithms against a given
+        parameter set, and tries to determine the number of classical
+        operations needed to solve the LWE problem.
+        If it comes up with a value of more than $2^{128}$ then usually
+        one considers the parameters to be secure.
+
+    </p>
+    <p>
+
+        Intuition though can be a bit strange.
+        For example if one keeps $m, n$ and $\alpha \cdot q$ constant,
+        but one just increases $q$, then the LWE problem becomes easier!
+        This is unlike (say) RSA or DLP were to make things more secure
+        we just increase the modulus.
+
+    </p>
+    <p>
+
+        When looking at quantum complexity intuition can also be
+        a bit strange.
+        For example Grover's algorithm should imply that AES-128 is
+        not considered secure in a post-quantum world, as the
+        attack via Grover's algorithm on AES-128 would require
+        $2^{64}$ quantum "operations".
+        However, most people think AES-128 will still remain secure
+        in a post-quantum world as the overall complexity of Grover's
+        algorithm when applies to AES-128 would be way beyond any
+        feasible quantum computer.
+
+    </p>
+    <h4>LWE Problem Summary</h4>
+    The key take away points:
+    <ol>
+        <li>Polynomial time should be measured in terms of the input
+            problem size.
+        </li>
+        <li>The $\alpha$ value is important, both for security and
+            applications.
+        </li>
+        <li>The $\alpha$ value is significantly different in different
+            practical applications of LWE.
+        </li>
+        <li>A "low" complexity quantum attack may not actually translate
+            into a practical quantum attack (as in AES-128), even
+            when/if a quantum computer is built.
+        </li>
+    </ol>
+
+    <h2>The Proposed Algorithm</h2>
+    The algorithm of Chen uses a quantum subroutine, which is
+    called $O(n)$ times, in order to generate a system of linear
+    equations which can then be solved by classical means.
+    The quantum subroutine is called as many times as is needed
+    in order to obtain a full rank linear system.
+
+    <p>
+
+        The algorithm is only given for when $D$ is a Gaussian-like
+        distribution, but let us assume that this restriction
+        can be removed (so we can apply it to the distributions
+        used in practical schemes based on LWE).
+
+    </p>
+    <p>
+
+        As said earlier I am not an expert on quantum algorithms,
+        so I will not discuss the quantum subroutine, but we can
+        discuss the theorem statement given by Chen.
+        This is
+
+    </p>
+    <p>
+
+        <b>Theorem:</b>
+        Let $n,m,q \in \mathbf{N}$, $\alpha \in (0,1)$ be
+        such that
+    </p>
+    <ul>
+        <li>$m \ge \Omega(n \cdot \log q)$,
+        </li>
+        <li>$q \in \tilde{\Omega}((\alpha \cdot q)^4 \cdot m^2)$.
+        </li>
+    </ul>
+    There is then a quantum algorithm that solves LWE in time
+    $\mathsf{poly}(m, \log q, \alpha \cdot q)$.
+
+    <p>
+
+        Now let us consider this statement in more detail.
+
+    </p>
+    <p>
+
+    </p>
+    <h3>The Conditions</h3>
+    The first thing one needs to consider are the conditions.
+
+    <p>
+
+        We have already discussed that we need more samples $m$
+        than variables $n$ in our secret, so the first condition
+        should not be a surprise.
+
+    </p>
+    <p>
+
+        We now need to look at the second condition, i.e.
+        $q \in \tilde{\Omega}((\alpha \cdot q)^4 \cdot m^2)$.
+        The key point is the dependence of $q$ on $\alpha \cdot q$.
+        Let us map these to our four cases considered above.
+
+    </p>
+    <ol>
+        <li><b>Kyber:</b>
+            Here, recall, $\alpha \cdot q \approx q^{0.1987}$ so
+            the condition is that
+            $$ q \in \tilde{\Omega}(q^{0.7948} \cdot m^2). $$
+            However, we also have for Kyber that $m &gt; n \approx q$.
+            Thus, we do not have
+            $$ q \in \tilde{\Omega}(n^{2.7948}).$$
+            Of course the proposed attack (if correct) could be
+            improved possibly, but it would seem highly unlikely that
+            it could be applied to Kyber as is.<p>
+            </p>
+        </li>
+        <li><b>Dilithium:</b>
+            Here, recall, $\alpha \cdot q \approx q^{0.1318}$.
+            But now we have the dimension $n = 5 \cdot 256$ (for
+            the Level 3 parameters) with $q=8380417$,
+            thus $q \approx n^{2.22}$.
+            This means $\alpha \cdot q \approx n^{0.2925}$,
+            and the second condition becomes
+            $$ q \in \tilde{\Omega}(n^{3.170}).$$
+            Thus less of an improvement is needed in the attack for
+            it to apply to Dilithium. <p>
+            </p>
+        </li>
+        <li><b>BGV:</b>
+            Recall, we have $\alpha \cdot q \approx q^{0.00227}$
+            and $n$ could be around $2^{15}$ or $2^{16}$,
+            with $q \approx 2^{1024}$.
+            Thus we have $\alpha \cdot q \approx n^{.1550}$.
+            Our second condition then becomes
+            $$ q \in \tilde{\Omega}(n^{2.620}).$$
+            But for BGV we have $q \approx n^{68.266}$.
+            So it would appear that the attack should apply to BGV. <p>
+            </p>
+        </li>
+        <li><b>TFHE:</b>
+            In this case, recall, we have $\alpha \cdot q \approx \sqrt{q}$.
+            We also have that $q =2^{64}$ and $n \le 2048$
+            and so $q \approx n^{5.818}$, and so we have
+            that $\alpha \cdot q$ can approximated by $n^{2.909}$.
+            The second condition of the theorem then becomes
+            $$ q \in \tilde{\Omega}( n^{13.636} ).$$
+            Yet we have $q \approx n^{5.818}$!
+            Thus the attack would need to improve quite a bit to apply
+            to TFHE. <p>
+            </p>
+        </li>
+    </ol>
+
+    <h3>The Complexity</h3>
+    Having discussed the conditions under which the theorem applies
+    we can now turn to the conclusion.
+    Here we need to consider the algorithm complexity, i.e.
+    $$\mathsf{poly}(m, \log q, \alpha \cdot q).$$
+    Alas, the theorem does not give any implied constants
+    or the polynomial degrees.
+
+    <p>
+
+        Schor's algorithm is devasting against RSA and ECDLP because
+        the quantum complexity is really not that large. So if a
+        quantum computer was ever built then it is plausible that
+        RSA and ECDLP would be broken.
+        On the other hand the quantum complexity of Grover's algorithm
+        against AES-128 is really high, and so it would take a huge
+        quantum computer in order to dent the security of AES-128.
+        From these two examples we can conclude that constants
+        matter.
+
+    </p>
+    <p>
+
+        We note, however, that the complexity depends on $\alpha \cdot q$,
+        i.e. it depends on a parameter which is not specified
+        by the input problem size.
+        Thus we have to look at each scheme in turn, where different
+        values of $\alpha \cdot q$ are given.
+
+    </p>
+    <p>
+
+        The following is a very crude examination, but it shows
+        why the constants matter here.
+        And we can have a view as to whether the complexity is
+        going to be feasible or infeasible to launch an attack
+        on an early stage quantum computer.
+
+    </p>
+    <p>
+
+        What I do is replace the terms $m$, $\log q$ and
+        $\alpha \cdot q$ in the complexity estimate by the
+        powers of two of these values for the four schemes
+        being discussed (I approximate $m$ with $n \cdot \log q$).
+        One then make ones own guess as to the implied constants,
+        and decide on which scheme one needs to worry about.
+
+    </p>
+    <ol>
+        <li><b>Kyber:</b>
+            $\mathsf{poly}(2^{13.87}, 2^{3.55}, 2^{2.32}).$
+        </li>
+        <li><b>Dilithium:</b>
+            $\mathsf{poly}(2^{14.84}, 2^{4.52}, 2^{3.03}).$
+        </li>
+        <li><b>BGV:</b>
+            $\mathsf{poly}(2^{25.00}, 2^{10.00}, 2^{2.32}).$
+        </li>
+        <li><b>TFHE:</b>
+            $\mathsf{poly}(2^{17.00}, 2^{6.00}, 2^{32.00}).$
+        </li>
+    </ol>
+    For Kyber and Dilithium we see that, assuming the implied
+    constants and degree are relatively small, the attack may be
+    feasible, if the conditions of the theorem can be improved.
+
+    <p>
+
+        For BGV we already noted that the conditions of the theorem are
+        satisfied, thus whether the attack is practical (on a future
+        quantum computer) depends on the dependence of the attack
+        on the value of $m$.
+    </p>
+    <ol>I suspect the dependence on $m$ is quite mild, as it
+        probably related to the repetition of the quantum
+        sub-routine and not the complexity of the sub-routine
+        itself. But that is a pure guess on my part.
+    </ol>
+
+    <p>
+
+        For TFHE we see that, assuming the conditions of the theorem
+        can be improved in order to bring TFHE into scope, the complexity
+        would also need to not depend on too high a polynomial
+        in $\alpha \cdot q$, as this is already $2^{32}$ for
+        standard TFHE parameters.
+
+    </p>
+    <h2>Conclusion</h2>
+    One should not necessarily throw the baby out with the bathwater
+    over this new paper.
+    There are extra caveats as well as my earlier ones of it not
+    yet being peer reviewed, or a quantum computer not yet being built.
+
+    <ol>
+        <li>The theorem pre-conditions do not apply to Kyber, Dilithium or
+            TFHE as currently proposed; they do however apply to BGV.
+        </li>
+        <li>Even if the pre-conditions were improved, the importance of
+            the complexity estimate on the noise term $\alpha \cdot q$
+            needs to be considered as to whether any attack is feasible.
+        </li>
+        <li>Even a low quantum complexity value of the form of $2^x$
+            quantum operations, for $30 \le x \le 100$, may not result
+            in a viable quantum algorithm (as per Grover applied to
+            AES-128).
+        </li>
+        <li>The attack only defeats quantum adversaries, if no large
+            scale quantum computer is ever built then we can still
+            happily use (any form of) FHE.
+        </li>
+        <li> Companies are happily deploying SNARKs based on
+            pairing based crypto, even though pairing based crypto
+            will fall long before LWE to any quantum computer; simply
+            due to the complexity of the different quantum algorithms.
+        </li>
+    </ol>
+
+    <hr>
+    Nigel Smart<br>
+    April 15th 2024.
+
+
+
+
+</body>
+
+</html>
