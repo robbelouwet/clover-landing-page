@@ -95,7 +95,6 @@ export const fetchAllUserServersRequest = () => {
     })
         .then((data) => {
             if (data.status % 400 < 100) {
-                modal.set(unauthorizedModal);
                 throw new Error('Unauthorized');
             }
             return data.json();
